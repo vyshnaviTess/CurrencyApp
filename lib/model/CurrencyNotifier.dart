@@ -1,27 +1,38 @@
 import 'package:flutter/foundation.dart';
 import 'package:myflutterapp/datalist/datalist.dart';
-import 'package:myflutterapp/datalist/offline/hive_data.dart';
+import 'package:myflutterapp/datalist/offline/offlinelist.dart';
 import 'package:myflutterapp/datalist/online/onlinelist.dart';
 import 'package:myflutterapp/model/currency.dart';
 
 class CurrencyNotifier with ChangeNotifier {
+  final OnlineCurrencyRates remoteRateService;
+  final LocalDataRates localRateService;
+
+  CurrencyNotifier({
+    required this.remoteRateService,
+    required this.localRateService,
+  });
+
   List<String> currencyCodes = [];
 
-  late bool _shouldRefresh;
+  late bool _shouldRefresh = true;
   List<GbpCurrency> _currencies = [];
   List<GbpCurrency> _filterCurrencies = [];
   List<GbpCurrency> get filterCurrencies => _filterCurrencies;
 
   CurrencyRates get _dataService {
+    remoteRateService.selectedCurrencyCode = currencyCodes.last;
+    localRateService.selectedCurrencyCode = currencyCodes.last;
+
     if (_shouldRefresh) {
       return ConversionRatesRemote(
-        remote: OnlineCurrencyRates(selectedCurrencyCode: currencyCodes.last),
-        local: HiveDataRates.instance,
+        remote: remoteRateService,
+        local: localRateService,
       );
     } else {
       return CurrencyRatesLocal(
-        local: HiveDataRates.instance,
-        remote: OnlineCurrencyRates(selectedCurrencyCode: currencyCodes.last),
+        local: localRateService,
+        remote: remoteRateService,
       );
     }
   }

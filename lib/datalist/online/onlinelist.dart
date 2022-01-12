@@ -6,11 +6,11 @@ import 'package:myflutterapp/model/currency.dart';
 
 class OnlineCurrencyRates implements CurrencyRates {
   final Client _apiClient = Client();
-  final String selectedCurrencyCode;
 
-  OnlineCurrencyRates({
-    required this.selectedCurrencyCode,
-  });
+  @override
+  late String selectedCurrencyCode;
+
+  OnlineCurrencyRates();
 
   @override
   Future<List<GbpCurrency>> getRates() async {

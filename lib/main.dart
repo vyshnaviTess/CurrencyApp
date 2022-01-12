@@ -4,6 +4,9 @@ import 'package:myflutterapp/model/CurrencyNotifier.dart';
 import 'package:myflutterapp/pages/CurrencyDetails.dart';
 import 'package:provider/provider.dart';
 
+import 'datalist/offline/hive_data.dart';
+import 'datalist/online/onlinelist.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -14,7 +17,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => CurrencyNotifier(),
+      create: (_) => CurrencyNotifier(
+        localRateService: HiveDataRates.instance,
+        remoteRateService: OnlineCurrencyRates(),
+      ),
       child: MaterialApp(
         title: 'NTT Data Rates',
         theme: ThemeData(

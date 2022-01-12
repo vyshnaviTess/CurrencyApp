@@ -107,6 +107,10 @@ class _CurrencyDetailsState extends State<CurrencyDetails> {
                       widget.controllerSearch.clear();
                       notifier.refreshCurrencies();
                     },
+                    onNavigationComplete: () {
+                      widget.controllerSearch.clear();
+                      notifier.refreshCurrencies();
+                    },
                   ),
                 ),
               ],
@@ -127,10 +131,14 @@ class _CurrencyDetailsState extends State<CurrencyDetails> {
   Widget _buildSearchWidget() {
     return SearchWidget(
       key: widget.keySearchBar,
-      text: '',
       controller: widget.controllerSearch,
       hintText: 'Currency name or code',
-      onChanged: (String value) {},
+      onSearch: (searchTerm) {
+        context.read<CurrencyNotifier>().filterCurrency(searchTerm);
+      },
+      onClear: () {
+        context.read<CurrencyNotifier>().refreshCurrencies();
+      },
     );
   }
 }

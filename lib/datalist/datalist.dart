@@ -2,6 +2,7 @@ import 'package:myflutterapp/datalist/offline/offlinelist.dart';
 import 'package:myflutterapp/model/currency.dart';
 
 abstract class CurrencyRates {
+  late String selectedCurrencyCode;
   Future<List<GbpCurrency>> getRates() async {
     return [];
   }
@@ -10,6 +11,9 @@ abstract class CurrencyRates {
 class CurrencyRatesLocal implements CurrencyRates {
   final LocalDataRates local;
   final CurrencyRates remote;
+
+  @override
+  late String selectedCurrencyCode;
 
   CurrencyRatesLocal({
     required this.local,
@@ -37,6 +41,9 @@ class CurrencyRatesLocal implements CurrencyRates {
 class ConversionRatesRemote implements CurrencyRates {
   final CurrencyRates remote;
   final LocalDataRates local;
+
+  @override
+  late String selectedCurrencyCode;
 
   ConversionRatesRemote({
     required this.remote,

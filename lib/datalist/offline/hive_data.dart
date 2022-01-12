@@ -30,6 +30,9 @@ class HiveDataRates implements LocalDataRates {
     }
     return Hive.openBox(_boxName);
   }
+
+  @override
+  late String selectedCurrencyCode;
 }
 
 extension _GbpConversionRateMapConverter on GbpCurrency {

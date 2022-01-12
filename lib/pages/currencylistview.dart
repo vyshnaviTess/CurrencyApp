@@ -6,11 +6,13 @@ import 'package:provider/provider.dart';
 class CurrencyListView extends StatefulWidget {
   final List<GbpCurrency> currencies;
   final Function onRefresh;
+  final Function onNavigationComplete;
 
   const CurrencyListView({
     Key? key,
     required this.currencies,
     required this.onRefresh,
+    required this.onNavigationComplete,
   }) : super(key: key);
 
   @override
@@ -87,9 +89,7 @@ class CurrencyListViewState extends State<CurrencyListView> {
           arguments: {
             'rate': rate,
           },
-        ).whenComplete(() {
-          context.read<CurrencyNotifier>().refreshCurrencies();
-        });
+        ).whenComplete(() => widget.onNavigationComplete);
       },
     );
   }
